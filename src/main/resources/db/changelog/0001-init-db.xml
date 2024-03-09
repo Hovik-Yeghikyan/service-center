@@ -1,0 +1,106 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet id="0001-init-db" author="hyeghikyan">
+        <createTable tableName="user">
+            <column type="int" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="name">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="surname">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="email">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="password">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValue="USER" type="ENUM('ADMIN', 'USER')" name="user_type">
+            </column>
+            <column defaultValueBoolean="false" type="boolean" name="active">
+            </column>
+            <column type="varchar(255)" name="token">
+                <constraints nullable="true"/>
+            </column>
+            <column type="varchar(255)" name="pic_name">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="product">
+            <column type="int" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="name">
+                <constraints nullable="false"/>
+            </column>
+            <column type="double" name="price">
+                <constraints nullable="true"/>
+            </column>
+            <column type="ENUM('DISPLAY','POWER_CONNECTORS',
+        'PROTECTIVE_GLASSES','BATTERIES','DAUGHTER_BOARDS','SSD','KEYBOARD')"
+                    name="category">
+            </column>
+        </createTable>
+        <createTable tableName="product_picture">
+            <column type="int" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="int" name="product_id">
+                <constraints nullable="true" foreignKeyName="fk_product_id" references="product(id)"/>
+            </column>
+            <column type="varchar(255)" name="pic_url">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="employee">
+            <column type="int" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="name">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="surname">
+                <constraints nullable="false"/>
+            </column>
+            <column type="varchar(255)" name="employee_picture">
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+        <createTable tableName="order">
+            <column type="int" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="int" name="product_id">
+                <constraints nullable="true" foreignKeyName="fk2_product_id" references="product(id)"/>
+            </column>
+            <column type="double" name="price">
+                <constraints nullable="true"/>
+            </column>
+            <column type="ENUM('NEW', 'DELIVERED', 'CANCELED')" name="order_status">
+            </column>
+            <column type="int" name="user_id">
+                <constraints nullable="true" foreignKeyName="fk_user_id" references="user(id)"/>
+            </column>
+            <column type="ENUM('PHONE', 'COMPUTER', 'TABLET')" name="service">
+            </column>
+            <column type="varchar(255)" name="service_description">
+                <constraints nullable="true"/>
+            </column>
+            <column type="int" name="employee_id">
+                <constraints nullable="true" foreignKeyName="fk_employee_id" references="employee(id)"/>
+            </column>
+            <column type="datetime" name="created_date">
+                <constraints nullable="true"/>
+            </column>
+            <column type="datetime" name="service_date">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
