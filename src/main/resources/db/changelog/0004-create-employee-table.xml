@@ -16,7 +16,6 @@
             <column type="varchar(255)" name="employee_picture">
                 <constraints nullable="true"/>
             </column>
-
         </createTable>
     </changeSet>
 </databaseChangeLog>
