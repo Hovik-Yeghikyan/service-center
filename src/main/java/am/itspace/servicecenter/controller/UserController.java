@@ -1,6 +1,7 @@
 package am.itspace.servicecenter.controller;
 
 import am.itspace.servicecenter.entity.User;
+import am.itspace.servicecenter.entity.UserType;
 import am.itspace.servicecenter.repository.UserRepository;
 import am.itspace.servicecenter.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
-    private  PasswordEncoder passwordEncoder;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     @GetMapping("/user/register")
@@ -34,10 +34,11 @@ public class UserController {
 
     @PostMapping("/user/register")
     public String userRegister(@ModelAttribute User user) {
-        Optional<User> byEmail = userRepository.findByEmail(user.getEmail());
-        if (byEmail.isEmpty()) {
+        User byEmail = userService.findByEmail(user.getEmail());
+        if (byEmail == null) {
+            user.setUserType(UserType.USER);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
+            userService.save(user);
             return "redirect:/user/register?msg=User Registered";
         } else {
             return "redirect:/user/register?msg=Email already in use";
