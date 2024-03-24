@@ -44,4 +44,14 @@ public class UserController {
             return "redirect:/user/register?msg=Email already in use";
         }
     }
+
+    @GetMapping("/loginPage")
+    public String loginPage() {
+        return "loginPage";
+    }
+
+    @GetMapping("/")
+    public String homePage() {
+        return "user/home";
+    }
 }
